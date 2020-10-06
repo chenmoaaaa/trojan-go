@@ -5,14 +5,15 @@ import (
 	"net"
 	"strconv"
 )
-
+//创建常量
 const (
 	KiB = 1024
 	MiB = KiB * 1024
 	GiB = MiB * 1024
 )
-
+//return string
 func HumanFriendlyTraffic(bytes uint64) string {
+        //判断大小进行不同的打印输出
 	if bytes <= KiB {
 		return fmt.Sprintf("%d B", bytes)
 	}
