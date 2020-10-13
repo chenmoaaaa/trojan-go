@@ -27,27 +27,40 @@ func HumanFriendlyTraffic(bytes uint64) string {
 }
 
 func PickPort(network string, host string) int {
+       //switch判断语句，依次判断case value为true则执行语句
 	switch network {
+        
 	case "tcp":
+                
 		for retry := 0; retry < 16; retry++ {
+                        //net.Listen用于监听IP和端口,tcp是协议类型，host是IP地址
 			l, err := net.Listen("tcp", host+":0")
+                        //判断error
 			if err != nil {
 				continue
 			}
+                        //不论是否匹配都关闭l
 			defer l.Close()
+                        //获取端口
 			_, port, err := net.SplitHostPort(l.Addr().String())
+                        //处理错误
 			Must(err)
+                        //将string端口转换为int端口
 			p, err := strconv.ParseInt(port, 10, 32)
 			Must(err)
+                        //return 端口
 			return int(p)
 		}
 	case "udp":
 		for retry := 0; retry < 16; retry++ {
+                        //UDP协议监听
 			conn, err := net.ListenPacket("udp", host+":0")
 			if err != nil {
 				continue
 			}
+                        //关闭关闭listener
 			defer conn.Close()
+                        //获取端口，并返回
 			_, port, err := net.SplitHostPort(conn.LocalAddr().String())
 			Must(err)
 			p, err := strconv.ParseInt(port, 10, 32)
