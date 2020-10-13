@@ -23,6 +23,7 @@ const Name = "CLIENT"
 // GenerateClientTree generate general outbound protocol stack
 func GenerateClientTree(transportPlugin bool, muxEnabled bool, wsEnabled bool, ssEnabled bool, routerEnabled bool) []string {
 	clientStack := []string{transport.Name}
+        //是否启用插件
 	if !transportPlugin {
 		clientStack = append(clientStack, tls.Name)
 	}
@@ -35,7 +36,7 @@ func GenerateClientTree(transportPlugin bool, muxEnabled bool, wsEnabled bool, s
 	clientStack = append(clientStack, trojan.Name)
 	if muxEnabled {
 		clientStack = append(clientStack, []string{mux.Name, simplesocks.Name}...)
-	}
+	
 	if routerEnabled {
 		clientStack = append(clientStack, router.Name)
 	}
