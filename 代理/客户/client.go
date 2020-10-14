@@ -23,7 +23,7 @@ const Name = "CLIENT"
 // GenerateClientTree generate general outbound protocol stack
 func GenerateClientTree(transportPlugin bool, muxEnabled bool, wsEnabled bool, ssEnabled bool, routerEnabled bool) []string {
 	clientStack := []string{transport.Name}
-        //是否启用插件
+        //是否启用tls插件
 	if !transportPlugin {
 		clientStack = append(clientStack, tls.Name)
 	}
@@ -33,6 +33,7 @@ func GenerateClientTree(transportPlugin bool, muxEnabled bool, wsEnabled bool, s
 	if ssEnabled {
 		clientStack = append(clientStack, shadowsocks.Name)
 	}
+        //启用Trojan
 	clientStack = append(clientStack, trojan.Name)
 	if muxEnabled {
 		clientStack = append(clientStack, []string{mux.Name, simplesocks.Name}...)
@@ -40,9 +41,10 @@ func GenerateClientTree(transportPlugin bool, muxEnabled bool, wsEnabled bool, s
 	if routerEnabled {
 		clientStack = append(clientStack, router.Name)
 	}
+        //返回出站协议
 	return clientStack
 }
-
+//init在main函数前初始化
 func init() {
 	proxy.RegisterProxyCreator(Name, func(ctx context.Context) (*proxy.Proxy, error) {
 		cfg := config.FromContext(ctx, Name).(*Config)
