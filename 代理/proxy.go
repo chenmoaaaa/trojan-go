@@ -22,6 +22,7 @@ const (
 
 // Proxy relay connections and packets
 type Proxy struct {
+        //tunnel(隧道)
 	sources []tunnel.Server
 	sink    tunnel.Client
 	ctx     context.Context
